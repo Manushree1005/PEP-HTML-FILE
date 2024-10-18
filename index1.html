@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Ticket Booking</title>
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: 'Poppins', sans-serif;
+        background-color: #f0f4f7;
+      }
+      .center {
+        width: 100vw;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: linear-gradient(to right, #a2d8a2, #66c266);
+      }
+      .tickets {
+        width: 500px;
+        background: #fff;
+        padding: 20px;
+        border-radius: 10px;
+        box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.1);
+      }
+      .ticket-selector .seats {
+        display: flex;
+        justify-content: center;
+        flex-wrap: wrap;
+      }
+      .seat {
+        width: 20px;
+        height: 20px;
+        background-color: #fff;
+        margin: 5px;
+        cursor: pointer;
+        border: 2px solid #ddd;
+        border-radius: 5px;
+      }
+      .seat.booked {
+        background-color: #ccc;
+        cursor: not-allowed;
+      }
+      .seat.selected {
+        background-color: #1cb978;
+        border-color: #1cb978;
+      }
+      .price {
+        margin-top: 20px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .price button {
+        background-color: #333;
+        color: #fff;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+      .price .total {
+        font-size: 16px;
+        font-weight: 500;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="center">
+      <div class="tickets">
+        <div class="ticket-selector">
+          <h2>Select Your Seats</h2>
+          <div class="seats" id="seatContainer">
+            <!-- Seats will be generated dynamically below -->
+          </div>
+        </div>
+        <div class="price">
+          <div class="total">
+            0 Tickets - $0
+          </div>
+          <button id="bookButton">Book</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      // Variables
+      const seatContainer = document.getElementById('seatContainer');
+      const totalTickets = document.querySelector('.total');
+      const bookButton = document.getElementById('bookButton');
+      let ticketCount = 0;
+      let ticketPrice = 200; // Example price per ticket
+
+      // Generate 30 seats dynamically
+      for (let i = 0; i < 30; i++) {
+        const seat = document.createElement('div');
+        seat.classList.add('seat');
+        if (Math.random() > 0.7) {
+          // Randomly assign some seats as booked
+          seat.classList.add('booked');
+        }
+        seatContainer.appendChild(seat);
+      }
+
+      // Seat selection
+      const seats = document.querySelectorAll('.seat:not(.booked)');
+      seats.forEach((seat) => {
+        seat.addEventListener('click', () => {
+          seat.classList.toggle('selected');
+          updateTicketSummary();
+        });
+      });
+
+      // Update ticket count and total price
+      function updateTicketSummary() {
+        const selectedSeats = document.querySelectorAll('.seat.selected');
+        ticketCount = selectedSeats.length;
+        totalTickets.innerHTML = `${ticketCount} Tickets - $${ticketCount * ticketPrice}`;
+      }
+
+      // Booking action
+      bookButton.addEventListener('click', () => {
+        if (ticketCount > 0) {
+          alert(`You have booked ${ticketCount} ticket(s) for a total of $${ticketCount * ticketPrice}`);
+        } else {
+          alert('Please select at least one seat before booking.');
+        }
+      });
+    </script>
+  </body>
+</html>
